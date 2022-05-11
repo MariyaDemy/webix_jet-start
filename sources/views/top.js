@@ -18,7 +18,7 @@ export default class TopView extends JetView {
 			data: [
 				{value: "Contacts", id: "contacts", icon: "wxi-user"},
 				{value: "Data",		 id: "data", icon: "wxi-pencil"},
-				{value: "Settings", id: "settings", icon: "wxi-dots"},
+				{value: "Settings", id: "settings", icon: "wxi-dots"}
 			]
 		};
 
