@@ -16,8 +16,9 @@ export default class TopView extends JetView {
 			select: true,
 			template: "<span class='webix_icon #icon#'></span> #value# ",
 			data: [
-				{value: "Dashboard", id: "start", icon: "wxi-columns"},
-				{value: "Data",		 id: "data", icon: "wxi-pencil"}
+				{value: "Contacts", id: "contacts", icon: "wxi-user"},
+				{value: "Data",		id: "data", icon: "wxi-pencil"},
+				{value: "Settings", id: "settings", icon: "wxi-dots"}
 			]
 		};
 
