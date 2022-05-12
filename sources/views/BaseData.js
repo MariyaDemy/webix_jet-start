@@ -47,7 +47,7 @@ export default class BaseData extends JetView {
 						view: "button",
 						value: "Save",
 						css: "webix_primary",
-						click() {
+						click: () => {
 							let form = this.$$("my_form");
 							if (form.validate()) {
 								const values = form.getValues();
@@ -65,7 +65,7 @@ export default class BaseData extends JetView {
 						view: "button",
 						value: "Clear",
 						css: "webix_primary",
-						click() {
+						click: () => {
 							let form = this.$$("my_form");
 							form.clear();
 							form.clearValidation();
