@@ -2,22 +2,23 @@ import {JetView} from "webix-jet";
 
 import countries from "../models/countries";
 import statuses from "../models/statuses";
+import BaseData from "./BaseData";
 
 export default class DataView extends JetView {
 	config() {
-		const valuesToForm = (id) => {
-			let val = $$("countriesTable").getItem(id);
-			$$("countriesForm").setValues(val);
+		const valuesToForm1 = (id) => {
+			let val = this.$$("countriesTable").getItem(id);
+			this.$$("countriesForm").setValues(val);
 		};
 
 		const valuesToForm2 = (id) => {
-			let val = $$("statusTable").getItem(id);
-			$$("statusForm").setValues(val);
+			let val = this.$$("statusTable").getItem(id);
+			this.$$("statusForm").setValues(val);
 		};
 
 		let dataForm1 = {
 			view: "form",
-			id: "countriesForm",
+			localId: "countriesForm",
 			elements: [
 				{
 					view: "text",
@@ -30,14 +31,14 @@ export default class DataView extends JetView {
 					value: "Save",
 					css: "webix_primary",
 					click() {
-						let form = $$("countriesForm");
+						let form = this.$$("countriesForm");
 						if (form.validate()) {
 							const values = form.getValues();
 							if (values.id) {
-								$$("countriesTable").updateItem(values.id, values);
+								this.$$("countriesTable").updateItem(values.id, values);
 							}
 							else {
-								$$("countriesTable").add(values);
+								this.$$("countriesTable").add(values);
 								form.clear();
 							}
 						}
@@ -48,10 +49,10 @@ export default class DataView extends JetView {
 					value: "Clear",
 					css: "webix_primary",
 					click() {
-						let form = $$("countriesForm");
+						let form = this.$$("countriesForm");
 						form.clear();
 						form.clearValidation();
-						$$("countriesTable").unselectAll();
+						this.$$("countriesTable").unselectAll();
 					}
 				}
 			],
@@ -65,7 +66,7 @@ export default class DataView extends JetView {
 
 		let dataForm2 = {
 			view: "form",
-			id: "statusForm",
+			localId: "statusForm",
 			elements: [
 				{
 					view: "text",
@@ -78,14 +79,14 @@ export default class DataView extends JetView {
 					value: "Save",
 					css: "webix_primary",
 					click() {
-						let form = $$("statusForm");
+						let form = this.$$("statusForm");
 						if (form.validate()) {
 							const values = form.getValues();
 							if (values.id) {
-								$$("statusTable").updateItem(values.id, values);
+								this.$$("statusTable").updateItem(values.id, values);
 							}
 							else {
-								$$("statusTable").add(values);
+								this.$$("statusTable").add(values);
 								form.clear();
 							}
 						}
@@ -96,10 +97,10 @@ export default class DataView extends JetView {
 					value: "Clear",
 					css: "webix_primary",
 					click() {
-						let form = $$("statusForm");
+						let form = this.$$("statusForm");
 						form.clear();
 						form.clearValidation();
-						$$("statusTable").unselectAll();
+						this.$$("statusTable").unselectAll();
 					}
 				}
 			],
@@ -118,70 +119,52 @@ export default class DataView extends JetView {
 				{
 					id: "data1",
 					rows: [
-						{
-							view: "datatable",
-							id: "countriesTable",
-							select: true,
-							data: countries,
-							scrollX: false,
-							scrollY: false,
-							columns: [
-								{
-									id: "Name",
-									header: "Country",
-									fillspace: true
-								},
-								{
-									id: "del",
-									header: "",
-									template: "{common.trashIcon()}"
-								}
-							],
-							onClick: {
-								"wxi-trash": function (event, id) {
-									this.remove(id);
-									return false;
-								}
+						new BaseData(
+							this.app,
+							{
+								columns: [
+									{
+										id: "Name",
+										header: "Country",
+										fillspace: true
+									},
+									{
+										localId: "del",
+										header: "",
+										template: "{common.trashIcon()}"
+									}
+								]
 							},
-							on: {
-								onAfterSelect: valuesToForm
-							}
-						},
+							"countriesTable",
+							countries,
+							valuesToForm1
+						),
 						dataForm1
 					]
 				},
 				{
 					id: "data2",
 					rows: [
-						{
-							view: "datatable",
-							id: "statusTable",
-							select: true,
-							data: statuses,
-							scrollX: false,
-							scrollY: false,
-							columns: [
-								{
-									id: "Name",
-									header: "Status",
-									fillspace: true
-								},
-								{
-									id: "del",
-									header: "",
-									template: "{common.trashIcon()}"
-								}
-							],
-							onClick: {
-								"wxi-trash": function (event, id) {
-									this.remove(id);
-									return false;
-								}
+						new BaseData(
+							this.app,
+							{
+								columns: [
+									{
+										id: "Name",
+										header: "Status",
+										fillspace: true
+									},
+									{
+										localId: "del",
+										header: "",
+										template: "{common.trashIcon()}"
+									}
+								]
 							},
-							on: {
-								onAfterSelect: valuesToForm2
-							}
-						},
+							"statusTable",
+							statuses,
+							valuesToForm2
+						),
 						dataForm2
 					]
 				}
@@ -190,7 +173,6 @@ export default class DataView extends JetView {
 
 		let tabs = {
 			view: "tabbar",
-			type: "bottom",
 			multiview: true,
 			value: "data1",
 			options: [
