@@ -6,6 +6,11 @@ import BaseData from "./BaseData";
 
 export default class DataView extends JetView {
 	config() {
+		let delColumn = {
+			header: "",
+			template: "{common.trashIcon()}"
+		};
+
 		let multiview = {
 			view: "multiview",
 			id: "multiview",
@@ -22,11 +27,7 @@ export default class DataView extends JetView {
 										header: "Country",
 										fillspace: true
 									},
-									{
-										localId: "del",
-										header: "",
-										template: "{common.trashIcon()}"
-									}
+									delColumn
 								]
 							},
 							countries,
@@ -46,11 +47,7 @@ export default class DataView extends JetView {
 										header: "Status",
 										fillspace: true
 									},
-									{
-										localId: "del",
-										header: "",
-										template: "{common.trashIcon()}"
-									}
+									delColumn
 								]
 							},
 							statuses,

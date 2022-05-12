@@ -9,11 +9,6 @@ export default class BaseData extends JetView {
 	}
 
 	config() {
-		const valuesToForm = (id) => {
-			let val = this.$$("my_table").getItem(id);
-			this.$$("my_form").setValues(val);
-		};
-
 		return {
 			rows: [{
 				view: "datatable",
@@ -30,7 +25,7 @@ export default class BaseData extends JetView {
 					}
 				},
 				on: {
-					onAfterSelect: valuesToForm
+					onAfterSelect: id => this.valuesToForm(id)
 				}
 			},
 			{
@@ -47,30 +42,13 @@ export default class BaseData extends JetView {
 						view: "button",
 						value: "Save",
 						css: "webix_primary",
-						click: () => {
-							let form = this.$$("my_form");
-							if (form.validate()) {
-								const values = form.getValues();
-								if (values.id) {
-									this.$$("my_table").updateItem(values.id, values);
-								}
-								else {
-									this.$$("my_table").add(values);
-									form.clear();
-								}
-							}
-						}
+						click: () => this.saveData()
 					},
 					{
 						view: "button",
 						value: "Clear",
 						css: "webix_primary",
-						click: () => {
-							let form = this.$$("my_form");
-							form.clear();
-							form.clearValidation();
-							this.$$("my_table").unselectAll();
-						}
+						click: () => this.clearData()
 					}
 				],
 				elementsConfig: {
@@ -81,5 +59,34 @@ export default class BaseData extends JetView {
 				}
 			}]
 		};
+	}
+
+	init() {
+		this.Form = this.$$("my_form");
+		this.Table = this.$$("my_table");
+	}
+
+	valuesToForm(id) {
+		let val = this.Table.getItem(id);
+		this.Form.setValues(val);
+	}
+
+	saveData() {
+		if (this.Form.validate()) {
+			const values = this.Form.getValues();
+			if (values.id) {
+				this.Table.updateItem(values.id, values);
+			}
+			else {
+				this.Table.add(values);
+				this.Form.clear();
+			}
+		}
+	}
+
+	clearData() {
+		this.Form.clear();
+		this.Form.clearValidation();
+		this.Table.unselectAll();
 	}
 }
