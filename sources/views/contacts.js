@@ -1,54 +1,46 @@
 import {JetView} from "webix-jet";
 
-import contacts from "../models/contacts";
+import contactsData from "../models/contacts";
+import ContactsForm from "./form";
 
 export default class Contacts extends JetView {
 	config() {
 		let list = {
 			view: "list",
-			template: "#Name# Email: #Email# Status: #Status# Country: #Country#",
-			data: contacts,
-			scroll: false
-		};
-
-		let form = {
-			view: "form",
-			elements: [
-				{type: "section", template: "Contacts"},
-				{
-					view: "text",
-					label: "Name",
-					height: 50,
-					name: "name"
-				},
-				{
-					view: "text",
-					label: "Email",
-					height: 50,
-					name: "email"
-				},
-				{
-					view: "text",
-					label: "Status",
-					height: 50,
-					name: "status"
-				},
-				{
-					view: "text",
-					label: "Country",
-					height: 50,
-					name: "country"
-				},
-				{}
-			]
+			id: "contactsList",
+			template: "#Name# Email: #Email# Status: #Status# Country: #Country# <span class='webix_icon wxi-close removeBtn'></span>",
+			scroll: false,
+			select: true,
+			css: "contactslist",
+			on: {
+				onAfterSelect: (id) => {
+					this.setParam("id", id, true);
+				}
+			},
+			onClick: {
+				removeBtn(event, id) {
+					contactsData.remove(id);
+					return false;
+				}
+			}
 		};
 
 		let ui = {
 			type: "wide",
 			css: "app_layout",
-			cols: [list, form]
+			cols: [list, {$subview: ContactsForm}]
 		};
 
 		return ui;
+	}
+
+	init() {
+		const list = this.$$("contactsList");
+		const id = this.getParam("id");
+
+		list.sync(contactsData);
+
+		// list.select(list.getFirstId());
+		list.select(id);
 	}
 }

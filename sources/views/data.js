@@ -1,11 +1,13 @@
 import {JetView} from "webix-jet";
 
-import countries from "../models/countries";
-import statuses from "../models/statuses";
+import countriesData from "../models/countries";
+import statusesData from "../models/statuses";
 import BaseData from "./BaseData";
 
 export default class DataView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		let delColumn = {
 			header: "",
 			template: "{common.trashIcon()}"
@@ -24,14 +26,14 @@ export default class DataView extends JetView {
 								columns: [
 									{
 										id: "Name",
-										header: "Country",
+										header: _("Country"),
 										fillspace: true
 									},
 									delColumn
 								]
 							},
-							countries,
-							"Country"
+							countriesData,
+							_("Country")
 						)
 					]
 				},
@@ -44,14 +46,14 @@ export default class DataView extends JetView {
 								columns: [
 									{
 										id: "Name",
-										header: "Status",
+										header: _("Status"),
 										fillspace: true
 									},
 									delColumn
 								]
 							},
-							statuses,
-							"Status"
+							statusesData,
+							_("Status")
 						)
 					]
 				}
@@ -64,11 +66,11 @@ export default class DataView extends JetView {
 			value: "data1",
 			options: [
 				{
-					value: "Countries",
+					value: _("Countries"),
 					id: "data1"
 				},
 				{
-					value: "Statuses",
+					value: _("Statuses"),
 					id: "data2"
 				}
 			],
