@@ -47,6 +47,6 @@ export default class Contacts extends JetView {
 		if (id) {
 			list.select(id);
 		}
-		else { list.unselect(); }
+		else { list.unselectAll(); }
 	}
 }
