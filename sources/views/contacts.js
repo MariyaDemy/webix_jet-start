@@ -8,7 +8,10 @@ export default class Contacts extends JetView {
 		let list = {
 			view: "list",
 			id: "contactsList",
-			template: "#Name# Email: #Email# Status: #Status# Country: #Country# <span class='webix_icon wxi-close removeBtn'></span>",
+			type: {
+				template: "<div class='wrap'>#Name# Email: #Email# Status: #Status# Country: #Country# <span class='webix_icon wxi-close removeBtn'></span></div>",
+				height: 80
+			},
 			scroll: false,
 			select: true,
 			css: "contactslist",
@@ -35,12 +38,15 @@ export default class Contacts extends JetView {
 	}
 
 	init() {
+		this.$$("contactsList").sync(contactsData);
+	}
+
+	urlChange() {
 		const list = this.$$("contactsList");
 		const id = this.getParam("id");
-
-		list.sync(contactsData);
-
-		// list.select(list.getFirstId());
-		list.select(id);
+		if (id) {
+			list.select(id);
+		}
+		else { list.unselect(); }
 	}
 }

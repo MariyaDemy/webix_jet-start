@@ -20,7 +20,7 @@ export default class BaseData extends JetView {
 				scrollY: false,
 				columns: this._config.columns,
 				onClick: {
-					"wxi-trash": function (event, id) {
+					"wxi-trash": (event, id) => {
 						this.data.remove(id);
 						return false;
 					}
