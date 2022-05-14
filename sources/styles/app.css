@@ -56,3 +56,8 @@
 	font-size:20px;
 	vertical-align:middle;
 }
+.wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}

@@ -9,6 +9,8 @@ export default class BaseData extends JetView {
 	}
 
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [{
 				view: "datatable",
@@ -16,11 +18,10 @@ export default class BaseData extends JetView {
 				select: true,
 				scrollX: false,
 				scrollY: false,
-				data: this.data,
 				columns: this._config.columns,
 				onClick: {
-					"wxi-trash": function (event, id) {
-						this.remove(id);
+					"wxi-trash": (event, id) => {
+						this.data.remove(id);
 						return false;
 					}
 				},
@@ -40,13 +41,13 @@ export default class BaseData extends JetView {
 					},
 					{
 						view: "button",
-						value: "Save",
+						value: _("Save"),
 						css: "webix_primary",
 						click: () => this.saveData()
 					},
 					{
 						view: "button",
-						value: "Clear",
+						value: _("Clear"),
 						css: "webix_primary",
 						click: () => this.clearData()
 					}
@@ -64,6 +65,7 @@ export default class BaseData extends JetView {
 	init() {
 		this.Form = this.$$("my_form");
 		this.Table = this.$$("my_table");
+		this.Table.sync(this.data);
 	}
 
 	valuesToForm(id) {
@@ -75,10 +77,10 @@ export default class BaseData extends JetView {
 		if (this.Form.validate()) {
 			const values = this.Form.getValues();
 			if (values.id) {
-				this.Table.updateItem(values.id, values);
+				this.data.updateItem(values.id, values);
 			}
 			else {
-				this.Table.add(values);
+				this.data.add(values);
 				this.Form.clear();
 			}
 		}
