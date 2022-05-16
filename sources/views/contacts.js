@@ -42,11 +42,15 @@ export default class Contacts extends JetView {
 	}
 
 	urlChange() {
-		const list = this.$$("contactsList");
-		const id = this.getParam("id");
-		if (id) {
-			list.select(id);
-		}
-		else { list.unselectAll(); }
+		contactsData.waitData.then(() => {
+			const list = this.$$("contactsList");
+			const id = this.getParam("id");
+			if (id) {
+				list.select(id);
+			}
+			else {
+				list.unselectAll();
+			}
+		});
 	}
 }
